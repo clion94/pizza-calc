@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Pizza Calc</title>
+<title>Pizza Dough Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inconsolata:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,26 +34,26 @@ body {
 /* ── masthead ── */
 .masthead {
   border-bottom: 2px solid var(--ink);
-  padding: 48px 56px 36px;
+  padding: 64px 80px 44px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
+  gap: 40px;
   position: relative;
 }
 .masthead::after {
   content: '';
   position: absolute;
-  bottom: 4px; left: 0; right: 0;
+  bottom: 5px; left: 0; right: 0;
   height: 1px;
   background: var(--ink);
 }
 .masthead-left h1 {
   font-family: var(--serif);
-  font-size: 64px;
+  font-size: 80px;
   font-weight: 700;
-  line-height: 1;
-  letter-spacing: -1px;
+  line-height: 0.95;
+  letter-spacing: -2px;
 }
 .masthead-left h1 em {
   font-style: italic;
@@ -62,87 +62,81 @@ body {
 }
 .masthead-tag {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-size: 12px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--muted);
-  margin-top: 6px;
+  margin-top: 14px;
 }
-.masthead-right {
-  text-align: right;
-}
-.edition-label {
+.masthead-right { text-align: right; }
+.masthead-right .edition-label {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 2px;
   color: var(--muted);
   text-transform: uppercase;
 }
-.edition-val {
+.masthead-right .edition-val {
   font-family: var(--serif);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--accent);
   line-height: 1.1;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 /* ── layout ── */
 .body-wrap {
   display: grid;
-  grid-template-columns: 1fr 2px 1fr 2px 1fr;
-  gap: 0;
-  padding: 0 56px;
-  max-width: 1600px;
+  grid-template-columns: 420px 1px 1fr 1px 1fr;
+  padding: 0 80px;
+  max-width: 1900px;
   margin: 0 auto;
 }
 .col-divider {
   background: var(--rule);
-  margin: 0 40px;
-  margin-top: 40px;
+  margin: 0 60px;
+  margin-top: 64px;
 }
-
-/* ── column styles ── */
-.col { padding: 44px 0; }
+.col { padding: 64px 0; }
 
 .col-head {
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--muted);
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 8px;
-  margin-bottom: 20px;
+  padding-bottom: 14px;
+  margin-bottom: 40px;
 }
 
 /* ── controls ── */
-.knob-group { margin-bottom: 36px; }
+.knob-group { margin-bottom: 52px; }
 
 .knob-label {
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-
 .knob-val {
   font-family: var(--serif);
-  font-size: 38px;
+  font-size: 60px;
   font-weight: 700;
   line-height: 1;
   color: var(--ink);
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 .knob-val sup {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 400;
   color: var(--muted);
   font-family: var(--sans);
   vertical-align: super;
-  margin-left: 2px;
+  margin-left: 6px;
 }
 
 input[type=range] {
@@ -156,7 +150,7 @@ input[type=range] {
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px; height: 16px;
+  width: 22px; height: 22px;
   border-radius: 50%;
   background: var(--ink);
   border: 3px solid var(--paper);
@@ -165,43 +159,31 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 
-.seg-btns {
-  display: flex;
-  gap: 4px;
-  margin-top: 4px;
-}
+.seg-btns { display: flex; gap: 6px; margin-top: 8px; }
 .seg-btn {
   flex: 1;
   border: 1px solid var(--rule);
   background: transparent;
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--muted);
-  padding: 7px 4px;
+  padding: 14px 4px;
   cursor: pointer;
   transition: all 0.15s;
 }
 .seg-btn:hover { border-color: var(--ink); color: var(--ink); }
-.seg-btn.on {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
-}
+.seg-btn.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
-.rule-thin {
-  height: 1px;
-  background: var(--rule);
-  margin: 20px 0;
-}
+.rule-thin { height: 1px; background: var(--rule); margin: 40px 0; }
 
-/* ── warning callout ── */
+/* ── callouts ── */
 .callout {
   border-left: 3px solid var(--warn);
-  padding: 10px 12px;
+  padding: 18px 20px;
   background: rgba(196,134,42,0.07);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .callout-head {
   font-family: var(--mono);
@@ -209,47 +191,45 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--warn);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-.callout p {
-  font-size: 12px;
-  color: var(--ink);
-  line-height: 1.6;
-}
+.callout p { font-size: 13px; color: var(--ink); line-height: 1.75; }
 .callout p strong { font-weight: 700; color: var(--accent); }
-
 .callout.green { border-color: var(--accent2); background: rgba(74,124,89,0.07); }
 .callout.green .callout-head { color: var(--accent2); }
+.callout.neutral { border-color: var(--muted); background: rgba(140,126,114,0.07); }
+.callout.neutral .callout-head { color: var(--muted); }
 
 /* ── ingredients ── */
 .ing-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--rule);
-  gap: 8px;
+  gap: 20px;
 }
 .ing-row:first-of-type { border-top: 1px solid var(--rule); }
 
+.ing-left { flex: 1; }
 .ing-name {
   font-family: var(--serif);
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--ink);
-  flex: 1;
 }
 .ing-note {
   font-size: 11px;
   color: var(--muted);
   font-family: var(--mono);
   display: block;
-  margin-top: 1px;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
 }
 .ing-right { text-align: right; flex-shrink: 0; }
 .ing-amt {
   font-family: var(--mono);
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--accent);
   line-height: 1;
@@ -259,69 +239,87 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
   color: var(--muted);
   font-family: var(--mono);
   display: block;
-  margin-top: 2px;
+  margin-top: 5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .totals-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  padding-top: 12px;
+  align-items: flex-start;
+  margin-top: 32px;
+  padding-top: 24px;
   border-top: 2px solid var(--ink);
 }
-.totals-row .t-label {
+.t-label {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--muted);
+  margin-bottom: 8px;
 }
-.totals-row .t-val {
+.t-val {
   font-family: var(--serif);
-  font-size: 28px;
+  font-size: 48px;
   font-weight: 700;
   color: var(--ink);
+  line-height: 1;
 }
-.totals-row .t-val span {
+.t-val span {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--muted);
+  margin-left: 6px;
 }
-
 .hydration-pill {
   display: inline-block;
   border: 1px solid var(--rule);
   border-radius: 20px;
-  padding: 3px 10px;
+  padding: 5px 16px;
   font-family: var(--mono);
   font-size: 10px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 14px;
+  letter-spacing: 1px;
 }
+
+/* ── ball shaping steps ── */
+.steps-list { display: flex; flex-direction: column; gap: 22px; margin-top: 8px; }
+.step-row { display: flex; gap: 20px; align-items: flex-start; }
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  flex-shrink: 0;
+  padding-top: 3px;
+  width: 26px;
+}
+.step-text { font-size: 14px; color: var(--muted); line-height: 1.75; }
+.step-text strong { color: var(--ink); font-weight: 700; }
 
 /* ── timeline ── */
 .tl-item {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 12px;
-  margin-bottom: 0;
+  grid-template-columns: 72px 1fr;
+  gap: 24px;
   position: relative;
 }
-.tl-item + .tl-item { margin-top: 28px; }
+.tl-item + .tl-item { margin-top: 40px; }
 .tl-item + .tl-item::before {
   content: '';
   position: absolute;
-  left: 27px; top: -16px;
-  width: 1px; height: 16px;
+  left: 35px; top: -40px;
+  width: 1px; height: 40px;
   background: var(--rule);
 }
-
 .tl-badge {
-  width: 56px; height: 56px;
+  width: 72px; height: 72px;
   border: 1px solid var(--rule);
-  border-radius: 2px;
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -339,57 +337,55 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 }
 .tl-badge .b-time {
   font-family: var(--serif);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.1;
-  margin-top: 1px;
-  text-align: center;
-}
-.tl-badge.active {
-  background: var(--ink);
-  border-color: var(--ink);
-}
-.tl-badge.active .b-day { color: rgba(255,255,255,0.5); }
-.tl-badge.active .b-time { color: var(--paper); }
-.tl-badge.warn {
-  background: var(--warn);
-  border-color: var(--warn);
-}
-.tl-badge.warn .b-day { color: rgba(255,255,255,0.7); }
-.tl-badge.warn .b-time { color: white; }
-
-.tl-body {}
-.tl-title {
-  font-family: var(--serif);
   font-size: 15px;
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 3px;
+  line-height: 1.2;
+  margin-top: 3px;
+  text-align: center;
 }
-.tl-desc {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.65;
+.tl-badge.active { background: var(--ink); border-color: var(--ink); }
+.tl-badge.active .b-day { color: rgba(255,255,255,0.45); }
+.tl-badge.active .b-time { color: var(--paper); }
+.tl-badge.warn { background: var(--warn); border-color: var(--warn); }
+.tl-badge.warn .b-day { color: rgba(255,255,255,0.65); }
+.tl-badge.warn .b-time { color: white; }
+
+.tl-body { padding-top: 6px; }
+.tl-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 7px;
+  line-height: 1.2;
 }
+.tl-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }
 .tl-desc strong { color: var(--accent); font-weight: 700; }
 .tl-desc em { color: var(--accent2); font-style: normal; font-weight: 700; }
+
+/* ── baking tips ── */
+.tips-list { display: flex; flex-direction: column; gap: 32px; }
+.tip-title {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 7px;
+}
+.tip-body { font-size: 13px; color: var(--muted); line-height: 1.8; }
+.tip-body strong { color: var(--ink); font-weight: 700; }
 
 /* ── footer strip ── */
 .footer-strip {
   border-top: 2px solid var(--ink);
-  margin-top: 0;
-  padding: 24px 56px;
+  padding: 32px 80px;
   display: flex;
-  gap: 48px;
+  gap: 64px;
   align-items: center;
   flex-wrap: wrap;
 }
-.footer-strip .f-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.f-item { display: flex; flex-direction: column; gap: 5px; }
 .f-label {
   font-family: var(--mono);
   font-size: 9px;
@@ -399,20 +395,20 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 }
 .f-val {
   font-family: var(--serif);
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--ink);
 }
-.f-val span { font-size: 12px; font-weight: 400; color: var(--muted); font-family: var(--mono); }
-.footer-divider { width: 1px; height: 36px; background: var(--rule); }
+.f-val span { font-size: 13px; font-weight: 400; color: var(--muted); font-family: var(--mono); margin-left: 3px; }
+.footer-divider { width: 1px; height: 44px; background: var(--rule); }
 
-@media (max-width: 900px) {
-  .body-wrap { grid-template-columns: 1fr; }
+@media (max-width: 1200px) {
+  .body-wrap { grid-template-columns: 1fr; padding: 0 36px; }
   .col-divider { display: none; }
-  .masthead { flex-direction: column; align-items: flex-start; }
+  .masthead { flex-direction: column; align-items: flex-start; padding: 48px 36px 32px; }
   .masthead-right { text-align: left; }
-  .body-wrap { padding: 0 24px; }
-  .masthead, .footer-strip { padding-left: 24px; padding-right: 24px; }
+  .masthead-left h1 { font-size: 56px; }
+  .footer-strip { padding: 28px 36px; gap: 36px; }
 }
 </style>
 </head>
@@ -420,12 +416,12 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 
 <div class="masthead">
   <div class="masthead-left">
-    <h1>My Pizza<br><em>Dough</em> Calc</h1>
-    <div class="masthead-tag">NY Style · Bread Flour · Baking Sheet · Georgetown TX</div>
+    <h1>Pizza Dough<br><em>Calculator</em></h1>
+    <div class="masthead-tag">NY Style · Cold Ferment · Baker's Percentages</div>
   </div>
   <div class="masthead-right">
-    <div class="edition-label">Tuned for</div>
-    <div class="edition-val">Your Kitchen</div>
+    <div class="edition-label">Method</div>
+    <div class="edition-val">Cold Ferment</div>
   </div>
 </div>
 
@@ -433,18 +429,18 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 
   <!-- COL 1: Controls -->
   <div class="col">
-    <div class="col-head">Your settings</div>
+    <div class="col-head">Settings</div>
 
     <div class="knob-group">
       <div class="knob-label">Number of pizzas</div>
       <div class="knob-val" id="d-pies">2 <sup>pies</sup></div>
-      <input type="range" id="s-pies" min="1" max="6" value="2" step="1">
+      <input type="range" id="s-pies" min="1" max="8" value="2" step="1">
     </div>
 
     <div class="knob-group">
       <div class="knob-label">Pizza diameter</div>
       <div class="knob-val" id="d-size">14 <sup>in</sup></div>
-      <input type="range" id="s-size" min="10" max="16" value="14" step="1">
+      <input type="range" id="s-size" min="10" max="18" value="14" step="1">
     </div>
 
     <div class="knob-group">
@@ -461,7 +457,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     <div class="knob-group">
       <div class="knob-label">Cold ferment days</div>
       <div class="knob-val" id="d-days">3 <sup>days</sup></div>
-      <input type="range" id="s-days" min="2" max="5" value="3" step="1">
+      <input type="range" id="s-days" min="1" max="5" value="3" step="1">
     </div>
 
     <div id="ferment-callout" class="callout"></div>
@@ -469,28 +465,32 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     <div class="rule-thin"></div>
 
     <div class="callout green">
-      <div class="callout-head">⚡ Over-fermentation</div>
-      <p>Airy + sticky after 3 days = too much activity before the fridge.<br>
-      <strong>Bulk rest max 45–60 min</strong> in a Texas kitchen. Dough should look nearly identical to when you finished mixing — smooth, not puffed.</p>
+      <div class="callout-head">⚠ Over-fermentation</div>
+      <p>If dough comes out of the fridge airy and sticky, too much activity happened before refrigerating. <strong>Limit bulk rest to 45–60 minutes</strong> in a warm kitchen. Dough should look nearly identical to when you finished mixing — smooth, not puffy.</p>
     </div>
 
-    <div class="callout" style="margin-top:12px;">
-      <div class="callout-head">⚡ Sticking</div>
-      <p>Flour your hands with <strong>bread flour</strong> before touching cold dough. Never wet hands. Dust the bench lightly too — semolina if you have it.</p>
+    <div class="callout" style="margin-top:16px">
+      <div class="callout-head">⚠ Tearing when stretching</div>
+      <p>Cold gluten snaps — warmed gluten stretches. After pulling from the fridge, <strong>rest 90–120 minutes at room temperature</strong> before attempting to stretch. If it springs back, cover and wait another 10–15 minutes.</p>
+    </div>
+
+    <div class="callout neutral" style="margin-top:16px">
+      <div class="callout-head">⚠ Sticking to hands</div>
+      <p>Flour hands with <strong>bread flour</strong> before handling cold dough — never wet hands. Dust the bench lightly with semolina for best results.</p>
     </div>
 
   </div>
 
   <div class="col-divider"></div>
 
-  <!-- COL 2: Ingredients -->
+  <!-- COL 2: Ingredients + Ball Shaping -->
   <div class="col">
-    <div class="col-head">Ingredients · baker's %</div>
+    <div class="col-head">Ingredients · Baker's %</div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Bread Flour</div>
-        <span class="ing-note">King Arthur · 100%</span>
+        <span class="ing-note">King Arthur recommended · 100%</span>
       </div>
       <div class="ing-right">
         <div class="ing-amt" id="i-flour">—</div>
@@ -499,7 +499,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     </div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Water</div>
         <span class="ing-note">Cold · under 60°F · 62%</span>
       </div>
@@ -510,9 +510,9 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     </div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Kosher Salt</div>
-        <span class="ing-note">Add last · 1.8%</span>
+        <span class="ing-note">Add after initial mix · 1.8%</span>
       </div>
       <div class="ing-right">
         <div class="ing-amt" id="i-salt">—</div>
@@ -521,9 +521,9 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     </div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Active Dry Yeast</div>
-        <span class="ing-note" id="i-yeast-pct">—%  · scales with ferment days</span>
+        <span class="ing-note" id="i-yeast-pct">Scales with ferment days</span>
       </div>
       <div class="ing-right">
         <div class="ing-amt" id="i-yeast">—</div>
@@ -532,7 +532,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     </div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Olive Oil</div>
         <span class="ing-note">2%</span>
       </div>
@@ -543,9 +543,9 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
     </div>
 
     <div class="ing-row">
-      <div>
+      <div class="ing-left">
         <div class="ing-name">Sugar</div>
-        <span class="ing-note">1% · feeds browning</span>
+        <span class="ing-note">Feeds crust browning · 1%</span>
       </div>
       <div class="ing-right">
         <div class="ing-amt" id="i-sugar">—</div>
@@ -565,62 +565,56 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
       </div>
     </div>
 
-    <div class="rule-thin"></div>
+    <div class="rule-thin" style="margin-top:48px"></div>
+    <div class="col-head" style="margin-top:0">Ball Shaping</div>
 
-    <!-- Ball shaping guide -->
-    <div class="col-head" style="margin-top:4px">Ball shaping · your other fix</div>
-
-    <div style="font-size:13px; color:var(--ink); line-height:1.8;">
-      <p style="margin-bottom:10px">After mixing, divide dough and shape each ball like this:</p>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">01</span>
-          <span style="font-size:12px;color:var(--muted)">Place dough on a <strong style="color:var(--ink)">bare, unfloured</strong> surface. You need friction.</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">02</span>
-          <span style="font-size:12px;color:var(--muted)">Cup your hand over dough. Drag toward you lightly. The counter pulls the bottom skin tight. Rotate and repeat <strong style="color:var(--ink)">8–10 times</strong>.</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">03</span>
-          <span style="font-size:12px;color:var(--muted)">Surface should feel <strong style="color:var(--ink)">taut like a drum.</strong> Pinch seam hard underneath.</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">04</span>
-          <span style="font-size:12px;color:var(--muted)">Place seam-down in a <strong style="color:var(--ink)">pint deli container</strong> — just barely bigger than the ball. Loose containers = flat, sticky dough.</span>
-        </div>
+    <div class="steps-list">
+      <div class="step-row">
+        <span class="step-num">01</span>
+        <span class="step-text">Place dough on a <strong>bare, unfloured surface.</strong> Friction against the counter is what creates surface tension — flour here defeats the purpose.</span>
+      </div>
+      <div class="step-row">
+        <span class="step-num">02</span>
+        <span class="step-text">Cup hand over dough and drag toward you with light downward pressure. The counter grips the bottom skin and pulls it tight. Rotate and repeat <strong>8–10 times.</strong></span>
+      </div>
+      <div class="step-row">
+        <span class="step-num">03</span>
+        <span class="step-text">Surface should feel <strong>taut like a drum.</strong> Pinch the seam firmly underneath to seal.</span>
+      </div>
+      <div class="step-row">
+        <span class="step-num">04</span>
+        <span class="step-text">Place seam-down in a <strong>lightly oiled container just barely larger than the ball.</strong> Oversized containers cause dough to spread flat and go slack during fermentation.</span>
       </div>
     </div>
-
   </div>
 
   <div class="col-divider"></div>
 
-  <!-- COL 3: Timeline -->
+  <!-- COL 3: Timeline + Baking -->
   <div class="col">
-    <div class="col-head">Process timeline</div>
+    <div class="col-head">Process Timeline</div>
 
     <div id="timeline"></div>
 
-    <div class="rule-thin" style="margin-top:24px"></div>
-    <div class="col-head" style="margin-top:4px">Baking sheet protocol</div>
+    <div class="rule-thin" style="margin-top:56px"></div>
+    <div class="col-head" style="margin-top:0">Baking Sheet Protocol</div>
 
-    <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px">
-      <div>
-        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Invert + preheat 45 min</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6">Flip sheet upside down, place on bottom rack. Max oven temp. 45 full minutes — not 20, not 30.</div>
+    <div class="tips-list">
+      <div class="tip-item">
+        <div class="tip-title">Invert and preheat 45 minutes</div>
+        <div class="tip-body">Flip the baking sheet upside down and place on the bottom rack. Set oven to <strong>550°F or maximum temperature.</strong> Allow the full 45 minutes — a fully saturated pan is the difference between a crispy undercarriage and a pale, soft one.</div>
       </div>
-      <div>
-        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Bottom rack → top rack</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6">4–5 min on bottom to set the undercarriage, then slide to top rack until cheese bubbles and edges char slightly.</div>
+      <div class="tip-item">
+        <div class="tip-title">Bottom rack → top rack</div>
+        <div class="tip-body">Bake <strong>4–5 minutes on the bottom rack</strong> to set and crisp the base, then transfer to the <strong>top rack</strong> until cheese is fully bubbled and edges are lightly charred.</div>
       </div>
-      <div>
-        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Semolina launch pad</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6">Build pizza on a cutting board dusted with semolina. Acts like ball bearings. Shake gently before launching to confirm it slides freely.</div>
+      <div class="tip-item">
+        <div class="tip-title">Build on semolina</div>
+        <div class="tip-body">Dust the cutting board or peel with <strong>semolina flour</strong> before building the pizza. It acts like ball bearings. Shake the board gently before launching to confirm the dough slides freely.</div>
       </div>
-      <div>
-        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Light sauce, strained tomatoes</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6">3–4 tbsp max. Strain your crushed tomatoes through a sieve first — moisture is the enemy on a baking sheet.</div>
+      <div class="tip-item">
+        <div class="tip-title">Go light on sauce</div>
+        <div class="tip-body">Use <strong>3–4 tablespoons of sauce maximum.</strong> Strain crushed tomatoes through a fine sieve before spreading — excess moisture prevents the crust from crisping on a baking sheet.</div>
       </div>
     </div>
   </div>
@@ -634,7 +628,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
   </div>
   <div class="footer-divider"></div>
   <div class="f-item">
-    <span class="f-label">Bulk rest max</span>
+    <span class="f-label">Max bulk rest</span>
     <span class="f-val">60 <span>min</span></span>
   </div>
   <div class="footer-divider"></div>
@@ -656,25 +650,27 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
 
 <script>
 const ballW = {
-  thin:    {10:175,11:195,12:215,13:240,14:265,15:290,16:318},
-  regular: {10:205,11:230,12:255,13:285,14:315,15:345,16:378},
-  thick:   {10:245,11:275,12:305,13:340,14:375,15:410,16:448}
+  thin:    {10:175,11:195,12:215,13:240,14:265,15:290,16:318,17:348,18:380},
+  regular: {10:205,11:230,12:255,13:285,14:315,15:345,16:378,17:413,18:450},
+  thick:   {10:245,11:275,12:305,13:340,14:375,15:410,16:448,17:488,18:530}
 };
-// yeast % keyed to ferment days — less yeast the longer you go
-const yeastMap = {2:0.40, 3:0.25, 4:0.17, 5:0.11};
+
+// True baker's % — small yeast, cold ferment does the work
+const yeastMap = {1:0.005, 2:0.004, 3:0.0025, 4:0.0017, 5:0.0011};
+
 const fermentMsg = {
-  2: {cls:'', head:'2-day ferment', body:'Short but workable. Flavor will be mild — the dough won\'t have the complexity of 3+ days. Use only if pressed for time.'},
-  3: {cls:'green', head:'3-day ferment — sweet spot', body:'This is where NY flavor lives. Gluten fully relaxed, crust will have chew and char. <strong>Stick to 45-min bulk rest</strong> or you\'ll over-ferment.'},
-  4: {cls:'green', head:'4-day ferment — excellent', body:'Complex, slightly tangy, very extensible dough. <em>Easiest stretch you\'ll ever do.</em> Yeast reduced automatically.'},
-  5: {cls:'green', head:'5-day ferment — advanced', body:'Deep flavor, almost sourdough-like tang. Yeast is dialed way down. Don\'t go past day 5 or gluten structure breaks down.'}
+  1: {cls:'',      head:'1-day ferment',             body:'Functional but minimal flavor development. Use only if short on time — the crust will lack the complexity of a longer ferment.'},
+  2: {cls:'',      head:'2-day ferment',              body:'Dough will be workable with mild flavor. Extend to 3 days if possible for noticeably better results.'},
+  3: {cls:'green', head:'3-day ferment — sweet spot', body:'The ideal window for NY-style. Full flavor development, relaxed gluten, good chew and char. <strong>Keep bulk rest to 45–60 minutes</strong> before refrigerating.'},
+  4: {cls:'green', head:'4-day ferment — excellent',  body:'Complex, lightly tangy flavor. Gluten is deeply relaxed and easy to stretch. Yeast is reduced automatically to match this longer ferment.'},
+  5: {cls:'green', head:'5-day ferment — advanced',   body:'Deep flavor with a hint of tang. Yeast dialed to minimum. Do not push past day 5 — gluten structure begins to break down.'}
 };
 
 let pies=2, size=14, thick='thin', days=3;
+const r1 = n => Math.round(n*10)/10;
+const r0 = n => Math.round(n);
 
-function r1(n){return Math.round(n*10)/10}
-function r0(n){return Math.round(n)}
-
-function calc(){
+function calc() {
   const ball = ballW[thick][size];
   const total = ball * pies;
   const yp = yeastMap[days];
@@ -689,11 +685,11 @@ function calc(){
     sugar: r1(flour * 0.01),
     total: r0(total),
     ball:  r0(ball),
-    yp:    (yp*100).toFixed(2)
+    yp:    (yp * 100).toFixed(3)
   };
 }
 
-function renderIngredients(d){
+function renderIngredients(d) {
   document.getElementById('i-flour').textContent = d.flour;
   document.getElementById('i-water').textContent = d.water;
   document.getElementById('i-salt').textContent  = d.salt;
@@ -706,40 +702,56 @@ function renderIngredients(d){
   document.getElementById('i-yeast-pct').textContent = d.yp + '% · scales with ferment days';
 }
 
-function renderFermentCallout(){
+function renderFermentCallout() {
   const m = fermentMsg[days];
-  document.getElementById('ferment-callout').className = 'callout' + (m.cls ? ' '+m.cls : '');
-  document.getElementById('ferment-callout').innerHTML =
-    `<div class="callout-head">${m.head}</div><p>${m.body}</p>`;
+  const el = document.getElementById('ferment-callout');
+  el.className = 'callout' + (m.cls ? ' ' + m.cls : '');
+  el.innerHTML = `<div class="callout-head">${m.head}</div><p>${m.body}</p>`;
 }
 
-function renderTimeline(){
+function renderTimeline() {
+  const ball = ballW[thick][size];
+  const yp = yeastMap[days];
   const steps = [
-    {day:'Day 0', time:'Mix', cls:'active',
-     title:'Mix the dough',
-     desc:`Cool water <strong>under 60°F</strong> — add a handful of ice if needed. Dissolve yeast + sugar, wait 5 min. Add flour + oil, mix 2 min. Then add salt, mix 10 min until smooth and pulling clean from the bowl.`},
-    {day:'Day 0', time:`≤${60}min`, cls:'warn',
-     title:'Bulk rest — 45–60 min MAX',
-     desc:`Cover with plastic. Set a timer. <strong>In a Texas kitchen this is your over-fermentation point.</strong> Dough should look almost identical to when you finished — smooth, barely changed. Not puffy.`},
-    {day:'Day 0', time:'Ball', cls:'',
-     title:'Shape balls + refrigerate',
-     desc:`Divide into <strong>${pies} ball${pies>1?'s':''} of ~${ballW[thick][size]}g</strong>. Use the bench-drag method (see middle column). Pint deli containers, seam-down, lightly oiled. Refrigerate immediately.`},
-    {day:`Days\n1–${days}`, time:'Fridge', cls:'',
-     title:`Cold ferment · ${days} day${days>1?'s':''}`,
-     desc:days===2
-       ? `Short ferment. Dough will be functional but mild. Check on day 2 — if it looks very airy already, use it.`
-       : days>=4
-       ? `<em>Best flavor window.</em> Yeast is dialed down to ${(yeastMap[days]*100).toFixed(2)}% so it won't over-run. Don't push past day ${days}.`
-       : `The sweet spot. Yeast at ${(yeastMap[days]*100).toFixed(2)}% — tuned to this exact ferment length. Don't open the container unnecessarily.`},
-    {day:'Bake\nday', time:'−2hr', cls:'warn',
-     title:'Pull from fridge · rest 90–120 min',
-     desc:`<strong>This is your tear fix.</strong> Set on counter, lightly covered. Cold gluten snaps — warm gluten stretches. If it still springs back when you press it, wait longer.`},
-    {day:'Bake\nday', time:'−45m', cls:'',
-     title:'Preheat inverted sheet at max temp',
-     desc:`Flip sheet, bottom rack, 550°F or your oven's max. Full 45 minutes. Meanwhile build your pizza on a semolina-dusted board.`},
-    {day:'Bake\nday', time:'Now', cls:'active',
-     title:'Stretch · top · launch · eat',
-     desc:`Knuckle-stretch using gravity — <strong>no rolling pin.</strong> Light sauce (3–4 tbsp, strained). Slide onto hot sheet. 4–5 min bottom rack, then top rack until bubbled and charred.`}
+    {
+      day:'Day 0', time:'Mix', cls:'active',
+      title:'Mix the dough',
+      desc:`Cool water to <strong>under 60°F</strong> — add ice cubes if needed. Dissolve yeast and sugar in water, wait 5 minutes until foamy. Add flour and oil, mix 2 minutes. Add salt, continue mixing <strong>8–10 minutes</strong> until smooth and pulling cleanly from the bowl.`
+    },
+    {
+      day:'Day 0', time:'≤60m', cls:'warn',
+      title:'Bulk rest — 45 to 60 minutes maximum',
+      desc:`Cover bowl and rest at room temperature. <strong>Set a timer.</strong> Dough should look nearly identical to when you finished mixing — smooth and barely changed. Not puffy, not airy. In a warm kitchen, err toward 45 minutes.`
+    },
+    {
+      day:'Day 0', time:'Ball', cls:'',
+      title:`Shape ${pies} ball${pies>1?'s':''} and refrigerate`,
+      desc:`Divide into <strong>${pies} equal ball${pies>1?'s':''} of ${r0(ball)}g each.</strong> Use the bench-drag method to build surface tension (see middle column). Place seam-down in lightly oiled, snug containers. Cover and refrigerate immediately.`
+    },
+    {
+      day:`Days\n1–${days}`, time:'Fridge', cls:'',
+      title:`Cold ferment · ${days} day${days>1?'s':''}`,
+      desc: days <= 2
+        ? `Short ferment — dough will be functional but flavor is underdeveloped. Do not open containers unnecessarily.`
+        : days >= 4
+        ? `<em>Excellent choice.</em> Yeast is set to ${(yp*100).toFixed(3)}% for this ferment length. Gluten will be deeply relaxed and easy to work with.`
+        : `The ideal window. Yeast at ${(yp*100).toFixed(3)}% is tuned specifically for a 3-day ferment. Do not open containers unnecessarily.`
+    },
+    {
+      day:'Bake\nday', time:'−2hr', cls:'warn',
+      title:'Pull from fridge · rest 90–120 minutes',
+      desc:`Remove from fridge and leave on the counter, lightly covered. Cold gluten tears — fully warmed gluten stretches. If dough springs back when pressed, cover and wait another 10–15 minutes before trying again.`
+    },
+    {
+      day:'Bake\nday', time:'−45m', cls:'',
+      title:'Preheat oven and inverted sheet',
+      desc:`Flip baking sheet upside down, place on bottom rack. Set oven to <strong>550°F or maximum.</strong> Allow the full 45 minutes to preheat. Meanwhile, build the pizza on a semolina-dusted board.`
+    },
+    {
+      day:'Bake\nday', time:'Now', cls:'active',
+      title:'Stretch · top · bake',
+      desc:`Use knuckles and gravity to stretch — <strong>never a rolling pin.</strong> Keep sauce light (3–4 tbsp, strained). Slide onto the hot inverted sheet. Bake 4–5 minutes on bottom rack, then transfer to top rack until cheese bubbles and edges char.`
+    }
   ];
 
   document.getElementById('timeline').innerHTML = steps.map(s => `
@@ -756,14 +768,13 @@ function renderTimeline(){
   `).join('');
 }
 
-function update(){
+function update() {
   const d = calc();
   renderIngredients(d);
   renderFermentCallout();
   renderTimeline();
 }
 
-// sliders
 document.getElementById('s-pies').addEventListener('input', e => {
   pies = +e.target.value;
   document.getElementById('d-pies').innerHTML = `${pies} <sup>pie${pies>1?'s':''}</sup>`;
@@ -779,8 +790,6 @@ document.getElementById('s-days').addEventListener('input', e => {
   document.getElementById('d-days').innerHTML = `${days} <sup>day${days>1?'s':''}</sup>`;
   update();
 });
-
-// thickness buttons
 document.querySelectorAll('.seg-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('on'));
