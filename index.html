@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Pizza Calc</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inconsolata:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #1C1917;
+  --paper: #FAF7F2;
+  --warm: #F0EAE0;
+  --rule: #DDD5C8;
+  --accent: #B85C2C;
+  --accent2: #4A7C59;
+  --warn: #C4862A;
+  --muted: #8C7E72;
+  --mono: 'Inconsolata', monospace;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Lato', sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── masthead ── */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 32px 40px 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+}
+.masthead::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--ink);
+}
+.masthead-left h1 {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.masthead-left h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.masthead-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.masthead-right {
+  text-align: right;
+}
+.edition-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.edition-val {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* ── layout ── */
+.body-wrap {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr 2px 1fr;
+  gap: 0;
+  padding: 0 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.col-divider {
+  background: var(--rule);
+  margin: 0 24px;
+  margin-top: 32px;
+}
+
+/* ── column styles ── */
+.col { padding: 32px 0; }
+
+.col-head {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+/* ── controls ── */
+.knob-group { margin-bottom: 24px; }
+
+.knob-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.knob-val {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.knob-val sup {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+  font-family: var(--sans);
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+  cursor: pointer;
+  border-radius: 1px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--ink);
+  transition: background 0.15s;
+}
+input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); }
+
+.seg-btns {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.seg-btn {
+  flex: 1;
+  border: 1px solid var(--rule);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.seg-btn:hover { border-color: var(--ink); color: var(--ink); }
+.seg-btn.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.rule-thin {
+  height: 1px;
+  background: var(--rule);
+  margin: 20px 0;
+}
+
+/* ── warning callout ── */
+.callout {
+  border-left: 3px solid var(--warn);
+  padding: 10px 12px;
+  background: rgba(196,134,42,0.07);
+  margin-bottom: 20px;
+}
+.callout-head {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-bottom: 4px;
+}
+.callout p {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.callout p strong { font-weight: 700; color: var(--accent); }
+
+.callout.green { border-color: var(--accent2); background: rgba(74,124,89,0.07); }
+.callout.green .callout-head { color: var(--accent2); }
+
+/* ── ingredients ── */
+.ing-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 8px;
+}
+.ing-row:first-of-type { border-top: 1px solid var(--rule); }
+
+.ing-name {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+.ing-note {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+  display: block;
+  margin-top: 1px;
+}
+.ing-right { text-align: right; flex-shrink: 0; }
+.ing-amt {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+}
+.ing-unit {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--mono);
+  display: block;
+  margin-top: 2px;
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid var(--ink);
+}
+.totals-row .t-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.totals-row .t-val {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.totals-row .t-val span {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.hydration-pill {
+  display: inline-block;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* ── timeline ── */
+.tl-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+  position: relative;
+}
+.tl-item + .tl-item { margin-top: 16px; }
+.tl-item + .tl-item::before {
+  content: '';
+  position: absolute;
+  left: 27px; top: -16px;
+  width: 1px; height: 16px;
+  background: var(--rule);
+}
+
+.tl-badge {
+  width: 56px; height: 56px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--warm);
+}
+.tl-badge .b-day {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1;
+}
+.tl-badge .b-time {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 1px;
+  text-align: center;
+}
+.tl-badge.active {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.tl-badge.active .b-day { color: rgba(255,255,255,0.5); }
+.tl-badge.active .b-time { color: var(--paper); }
+.tl-badge.warn {
+  background: var(--warn);
+  border-color: var(--warn);
+}
+.tl-badge.warn .b-day { color: rgba(255,255,255,0.7); }
+.tl-badge.warn .b-time { color: white; }
+
+.tl-body {}
+.tl-title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.tl-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.tl-desc strong { color: var(--accent); font-weight: 700; }
+.tl-desc em { color: var(--accent2); font-style: normal; font-weight: 700; }
+
+/* ── footer strip ── */
+.footer-strip {
+  border-top: 2px solid var(--ink);
+  margin-top: 0;
+  padding: 16px 40px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.footer-strip .f-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.f-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.f-val {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.f-val span { font-size: 12px; font-weight: 400; color: var(--muted); font-family: var(--mono); }
+.footer-divider { width: 1px; height: 36px; background: var(--rule); }
+
+@media (max-width: 900px) {
+  .body-wrap { grid-template-columns: 1fr; }
+  .col-divider { display: none; }
+  .masthead { flex-direction: column; align-items: flex-start; }
+  .masthead-right { text-align: left; }
+  .body-wrap { padding: 0 20px; }
+  .masthead, .footer-strip { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-left">
+    <h1>My Pizza<br><em>Dough</em> Calc</h1>
+    <div class="masthead-tag">NY Style · Bread Flour · Baking Sheet · Georgetown TX</div>
+  </div>
+  <div class="masthead-right">
+    <div class="edition-label">Tuned for</div>
+    <div class="edition-val">Your Kitchen</div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <!-- COL 1: Controls -->
+  <div class="col">
+    <div class="col-head">Your settings</div>
+
+    <div class="knob-group">
+      <div class="knob-label">Number of pizzas</div>
+      <div class="knob-val" id="d-pies">2 <sup>pies</sup></div>
+      <input type="range" id="s-pies" min="1" max="6" value="2" step="1">
+    </div>
+
+    <div class="knob-group">
+      <div class="knob-label">Pizza diameter</div>
+      <div class="knob-val" id="d-size">14 <sup>in</sup></div>
+      <input type="range" id="s-size" min="10" max="16" value="14" step="1">
+    </div>
+
+    <div class="knob-group">
+      <div class="knob-label">Thickness</div>
+      <div class="seg-btns">
+        <button class="seg-btn on" data-t="thin">Thin</button>
+        <button class="seg-btn" data-t="regular">Regular</button>
+        <button class="seg-btn" data-t="thick">Thick</button>
+      </div>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <div class="knob-group">
+      <div class="knob-label">Cold ferment days</div>
+      <div class="knob-val" id="d-days">3 <sup>days</sup></div>
+      <input type="range" id="s-days" min="2" max="5" value="3" step="1">
+    </div>
+
+    <div id="ferment-callout" class="callout"></div>
+
+    <div class="rule-thin"></div>
+
+    <div class="callout green">
+      <div class="callout-head">⚡ Your Fix · Over-fermentation</div>
+      <p>Airy + sticky after 3 days = too much activity before the fridge.<br>
+      <strong>Bulk rest max 45–60 min</strong> in a Texas kitchen. Dough should look nearly identical to when you finished mixing — smooth, not puffed.</p>
+    </div>
+
+    <div class="callout" style="margin-top:12px;">
+      <div class="callout-head">⚡ Your Fix · Sticking</div>
+      <p>Flour your hands with <strong>bread flour</strong> before touching cold dough. Never wet hands. Dust the bench lightly too — semolina if you have it.</p>
+    </div>
+
+  </div>
+
+  <div class="col-divider"></div>
+
+  <!-- COL 2: Ingredients -->
+  <div class="col">
+    <div class="col-head">Ingredients · baker's %</div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Bread Flour</div>
+        <span class="ing-note">King Arthur · 100%</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-flour">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Water</div>
+        <span class="ing-note">Cold · under 60°F · 62%</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-water">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Kosher Salt</div>
+        <span class="ing-note">Add last · 1.8%</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-salt">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Active Dry Yeast</div>
+        <span class="ing-note" id="i-yeast-pct">—%  · scales with ferment days</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-yeast">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Olive Oil</div>
+        <span class="ing-note">2%</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-oil">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="ing-row">
+      <div>
+        <div class="ing-name">Sugar</div>
+        <span class="ing-note">1% · feeds browning</span>
+      </div>
+      <div class="ing-right">
+        <div class="ing-amt" id="i-sugar">—</div>
+        <span class="ing-unit">grams</span>
+      </div>
+    </div>
+
+    <div class="totals-row">
+      <div>
+        <div class="t-label">Total dough</div>
+        <div class="t-val" id="i-total">— <span>g</span></div>
+        <div class="hydration-pill">62% hydration</div>
+      </div>
+      <div style="text-align:right">
+        <div class="t-label">Per ball</div>
+        <div class="t-val" id="i-ball">— <span>g</span></div>
+      </div>
+    </div>
+
+    <div class="rule-thin"></div>
+
+    <!-- Ball shaping guide -->
+    <div class="col-head" style="margin-top:4px">Ball shaping · your other fix</div>
+
+    <div style="font-size:13px; color:var(--ink); line-height:1.8;">
+      <p style="margin-bottom:10px">After mixing, divide dough and shape each ball like this:</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">01</span>
+          <span style="font-size:12px;color:var(--muted)">Place dough on a <strong style="color:var(--ink)">bare, unfloured</strong> surface. You need friction.</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">02</span>
+          <span style="font-size:12px;color:var(--muted)">Cup your hand over dough. Drag toward you lightly. The counter pulls the bottom skin tight. Rotate and repeat <strong style="color:var(--ink)">8–10 times</strong>.</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">03</span>
+          <span style="font-size:12px;color:var(--muted)">Surface should feel <strong style="color:var(--ink)">taut like a drum.</strong> Pinch seam hard underneath.</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:2px">04</span>
+          <span style="font-size:12px;color:var(--muted)">Place seam-down in a <strong style="color:var(--ink)">pint deli container</strong> — just barely bigger than the ball. Loose containers = flat, sticky dough.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-divider"></div>
+
+  <!-- COL 3: Timeline -->
+  <div class="col">
+    <div class="col-head">Process timeline</div>
+
+    <div id="timeline"></div>
+
+    <div class="rule-thin" style="margin-top:24px"></div>
+    <div class="col-head" style="margin-top:4px">Baking sheet protocol</div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px">
+      <div>
+        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Invert + preheat 45 min</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6">Flip sheet upside down, place on bottom rack. Max oven temp. 45 full minutes — not 20, not 30.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Bottom rack → top rack</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6">4–5 min on bottom to set the undercarriage, then slide to top rack until cheese bubbles and edges char slightly.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Semolina launch pad</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6">Build pizza on a cutting board dusted with semolina. Acts like ball bearings. Shake gently before launching to confirm it slides freely.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--serif);font-size:14px;font-weight:700;margin-bottom:3px">Light sauce, strained tomatoes</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6">3–4 tbsp max. Strain your crushed tomatoes through a sieve first — moisture is the enemy on a baking sheet.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-strip">
+  <div class="f-item">
+    <span class="f-label">Ball weight</span>
+    <span class="f-val" id="f-ball">— <span>g</span></span>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="f-item">
+    <span class="f-label">Bulk rest max</span>
+    <span class="f-val">60 <span>min</span></span>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="f-item">
+    <span class="f-label">Room temp rest (bake day)</span>
+    <span class="f-val">90–120 <span>min</span></span>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="f-item">
+    <span class="f-label">Oven temp</span>
+    <span class="f-val">550°F <span>max</span></span>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="f-item">
+    <span class="f-label">Preheat time</span>
+    <span class="f-val">45 <span>min</span></span>
+  </div>
+</div>
+
+<script>
+const ballW = {
+  thin:    {10:175,11:195,12:215,13:240,14:265,15:290,16:318},
+  regular: {10:205,11:230,12:255,13:285,14:315,15:345,16:378},
+  thick:   {10:245,11:275,12:305,13:340,14:375,15:410,16:448}
+};
+// yeast % keyed to ferment days — less yeast the longer you go
+const yeastMap = {2:0.40, 3:0.25, 4:0.17, 5:0.11};
+const fermentMsg = {
+  2: {cls:'', head:'2-day ferment', body:'Short but workable. Flavor will be mild — the dough won\'t have the complexity of 3+ days. Use only if pressed for time.'},
+  3: {cls:'green', head:'3-day ferment — sweet spot', body:'This is where NY flavor lives. Gluten fully relaxed, crust will have chew and char. <strong>Stick to 45-min bulk rest</strong> or you\'ll over-ferment.'},
+  4: {cls:'green', head:'4-day ferment — excellent', body:'Complex, slightly tangy, very extensible dough. <em>Easiest stretch you\'ll ever do.</em> Yeast reduced automatically.'},
+  5: {cls:'green', head:'5-day ferment — advanced', body:'Deep flavor, almost sourdough-like tang. Yeast is dialed way down. Don\'t go past day 5 or gluten structure breaks down.'}
+};
+
+let pies=2, size=14, thick='thin', days=3;
+
+function r1(n){return Math.round(n*10)/10}
+function r0(n){return Math.round(n)}
+
+function calc(){
+  const ball = ballW[thick][size];
+  const total = ball * pies;
+  const yp = yeastMap[days];
+  const denom = 1 + 0.62 + 0.018 + 0.02 + 0.01 + yp;
+  const flour = total / denom;
+  return {
+    flour: r0(flour),
+    water: r0(flour * 0.62),
+    salt:  r1(flour * 0.018),
+    yeast: r1(flour * yp),
+    oil:   r1(flour * 0.02),
+    sugar: r1(flour * 0.01),
+    total: r0(total),
+    ball:  r0(ball),
+    yp:    (yp*100).toFixed(2)
+  };
+}
+
+function renderIngredients(d){
+  document.getElementById('i-flour').textContent = d.flour;
+  document.getElementById('i-water').textContent = d.water;
+  document.getElementById('i-salt').textContent  = d.salt;
+  document.getElementById('i-yeast').textContent = d.yeast;
+  document.getElementById('i-oil').textContent   = d.oil;
+  document.getElementById('i-sugar').textContent = d.sugar;
+  document.getElementById('i-total').innerHTML   = d.total + ' <span>g</span>';
+  document.getElementById('i-ball').innerHTML    = d.ball  + ' <span>g</span>';
+  document.getElementById('f-ball').innerHTML    = d.ball  + ' <span>g</span>';
+  document.getElementById('i-yeast-pct').textContent = d.yp + '% · scales with ferment days';
+}
+
+function renderFermentCallout(){
+  const m = fermentMsg[days];
+  document.getElementById('ferment-callout').className = 'callout' + (m.cls ? ' '+m.cls : '');
+  document.getElementById('ferment-callout').innerHTML =
+    `<div class="callout-head">${m.head}</div><p>${m.body}</p>`;
+}
+
+function renderTimeline(){
+  const steps = [
+    {day:'Day 0', time:'Mix', cls:'active',
+     title:'Mix the dough',
+     desc:`Cool water <strong>under 60°F</strong> — add a handful of ice if needed. Dissolve yeast + sugar, wait 5 min. Add flour + oil, mix 2 min. Then add salt, mix 10 min until smooth and pulling clean from the bowl.`},
+    {day:'Day 0', time:`≤${60}min`, cls:'warn',
+     title:'Bulk rest — 45–60 min MAX',
+     desc:`Cover with plastic. Set a timer. <strong>In a Texas kitchen this is your over-fermentation point.</strong> Dough should look almost identical to when you finished — smooth, barely changed. Not puffy.`},
+    {day:'Day 0', time:'Ball', cls:'',
+     title:'Shape balls + refrigerate',
+     desc:`Divide into <strong>${pies} ball${pies>1?'s':''} of ~${ballW[thick][size]}g</strong>. Use the bench-drag method (see middle column). Pint deli containers, seam-down, lightly oiled. Refrigerate immediately.`},
+    {day:`Days\n1–${days}`, time:'Fridge', cls:'',
+     title:`Cold ferment · ${days} day${days>1?'s':''}`,
+     desc:days===2
+       ? `Short ferment. Dough will be functional but mild. Check on day 2 — if it looks very airy already, use it.`
+       : days>=4
+       ? `<em>Best flavor window.</em> Yeast is dialed down to ${(yeastMap[days]*100).toFixed(2)}% so it won't over-run. Don't push past day ${days}.`
+       : `The sweet spot. Yeast at ${(yeastMap[days]*100).toFixed(2)}% — tuned to this exact ferment length. Don't open the container unnecessarily.`},
+    {day:'Bake\nday', time:'−2hr', cls:'warn',
+     title:'Pull from fridge · rest 90–120 min',
+     desc:`<strong>This is your tear fix.</strong> Set on counter, lightly covered. Cold gluten snaps — warm gluten stretches. If it still springs back when you press it, wait longer.`},
+    {day:'Bake\nday', time:'−45m', cls:'',
+     title:'Preheat inverted sheet at max temp',
+     desc:`Flip sheet, bottom rack, 550°F or your oven's max. Full 45 minutes. Meanwhile build your pizza on a semolina-dusted board.`},
+    {day:'Bake\nday', time:'Now', cls:'active',
+     title:'Stretch · top · launch · eat',
+     desc:`Knuckle-stretch using gravity — <strong>no rolling pin.</strong> Light sauce (3–4 tbsp, strained). Slide onto hot sheet. 4–5 min bottom rack, then top rack until bubbled and charred.`}
+  ];
+
+  document.getElementById('timeline').innerHTML = steps.map(s => `
+    <div class="tl-item">
+      <div class="tl-badge ${s.cls}">
+        <span class="b-day">${s.day.replace('\n','<br>')}</span>
+        <span class="b-time">${s.time.replace('\n','<br>')}</span>
+      </div>
+      <div class="tl-body">
+        <div class="tl-title">${s.title}</div>
+        <div class="tl-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function update(){
+  const d = calc();
+  renderIngredients(d);
+  renderFermentCallout();
+  renderTimeline();
+}
+
+// sliders
+document.getElementById('s-pies').addEventListener('input', e => {
+  pies = +e.target.value;
+  document.getElementById('d-pies').innerHTML = `${pies} <sup>pie${pies>1?'s':''}</sup>`;
+  update();
+});
+document.getElementById('s-size').addEventListener('input', e => {
+  size = +e.target.value;
+  document.getElementById('d-size').innerHTML = `${size} <sup>in</sup>`;
+  update();
+});
+document.getElementById('s-days').addEventListener('input', e => {
+  days = +e.target.value;
+  document.getElementById('d-days').innerHTML = `${days} <sup>day${days>1?'s':''}</sup>`;
+  update();
+});
+
+// thickness buttons
+document.querySelectorAll('.seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    thick = btn.dataset.t;
+    update();
+  });
+});
+
+update();
+</script>
+</body>
+</html>
